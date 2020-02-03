@@ -1,4 +1,4 @@
-package com.example.carros.domain;
+package com.carros.domain;
 
 import java.util.List;
 

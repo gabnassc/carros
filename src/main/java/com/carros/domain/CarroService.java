@@ -1,4 +1,4 @@
-package com.example.carros.domain;
+package com.carros.domain;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.example.carros.domain.dto.CarroDTO;
-import com.example.carros.domain.exception.ObjectNotFoundException;
+import com.carros.api.exception.ObjectNotFoundException;
+import com.carros.domain.dto.CarroDTO;
 
 @Service
 public class CarroService {

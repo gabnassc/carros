@@ -1,8 +1,7 @@
 package com.example.carros;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -16,8 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.carros.domain.Carro;
-import com.example.carros.domain.dto.CarroDTO;
+import com.carros.CarrosApplication;
+import com.carros.domain.Carro;
+import com.carros.domain.dto.CarroDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,11 +27,11 @@ public class CarrosAPITest {
 	protected TestRestTemplate rest;
 	
 	private ResponseEntity<CarroDTO> getCarro(String url){
-		return rest.getForEntity(url, CarroDTO.class);
+		return rest.withBasicAuth("user","123").getForEntity(url, CarroDTO.class);
 	} 
 	
 	private ResponseEntity<List<CarroDTO>> getCarros(String url){
-		return rest.exchange(
+		return rest.withBasicAuth("user", "123").exchange(
 				url, 
 				HttpMethod.GET, 
 				null, 
@@ -63,7 +63,7 @@ public class CarrosAPITest {
         assertEquals("esportivos", c.getTipo());
 
         // Deletar o objeto
-        rest.withBasicAuth("user","123").delete(location);
+        rest.withBasicAuth("admin","123").delete(location);
 
         // Verificar se deletou
         assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());

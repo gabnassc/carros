@@ -1,4 +1,4 @@
-package com.example.carros.api.exception;
+package com.carros.api.exception;
 
 import java.io.Serializable;
 
@@ -6,14 +6,15 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 
 @RestControllerAdvice
-public class ExceptionConfig extends ResponseEntityExceptionHandler{
+public class ExceptionConfig extends ResponseStatusExceptionHandler{
 	
 	@ExceptionHandler({
 		EmptyResultDataAccessException.class
@@ -29,7 +30,16 @@ public class ExceptionConfig extends ResponseEntityExceptionHandler{
 		return ResponseEntity.badRequest().build();		
 	}
 	
-	@Override
+	
+	@ExceptionHandler
+	({
+		AccessDeniedException.class
+	})
+	
+	public ResponseEntity AccessDeniedException() {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Error("Acesso negado"));
+	}
+	
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
 			HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
@@ -43,15 +53,11 @@ public class ExceptionConfig extends ResponseEntityExceptionHandler{
 
 class ExceptionError implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String error;
 	public ExceptionError(String error) {
 		
 		this.error = error;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public String getError() {

@@ -1,4 +1,4 @@
-package com.example.carros.api;
+package com.carros.api;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
